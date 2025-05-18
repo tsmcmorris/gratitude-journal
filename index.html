@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <title>感恩心情日記 App</title>
+  <style>
+    body {
+      font-family: "Helvetica", sans-serif;
+      background-color: #fef8f2;
+      color: #333;
+      padding: 20px;
+      max-width: 600px;
+      margin: auto;
+    }
+    h1 {
+      text-align: center;
+      color: #b36b00;
+    }
+    textarea {
+      width: 100%;
+      height: 80px;
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      margin-bottom: 10px;
+    }
+    button {
+      background-color: #f5a623;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-size: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #d48806;
+    }
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+    li {
+      background: #fff7e6;
+      margin: 10px 0;
+      padding: 10px;
+      border-radius: 8px;
+      position: relative;
+    }
+    .date {
+      font-size: 12px;
+      color: #888;
+    }
+    .delete-btn {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      background: #ff4d4f;
+      border: none;
+      color: white;
+      padding: 4px 8px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>🧘 感恩心情日記</h1>
+  <textarea id="entry" placeholder="今天我感謝什麼？寫下來吧..."></textarea>
+  <br>
+  <button onclick="saveEntry()">儲存日記</button>
+  <h3>📝 我的日記</h3>
+  <ul id="entries"></ul>
+
+  <script>
+    const entryInput = document.getElementById('entry');
+    const entriesList = document.getElementById('entries');
+
+    // 初始化：載入日記
+    window.onload = function() {
+      loadEntries();
+    };
+
+    function saveEntry() {
+      const text = entryInput.value.trim();
+      if (text === '') return;
+
+      const date = new Date().toISOString().split('T')[0];
+      const id = Date.now();
+      const entry = { id, text, date };
+
+      let entries = JSON.parse(localStorage.getItem('gratitudeEntries')) || [];
+      entries.unshift(entry);
+      localStorage.setItem('gratitudeEntries', JSON.stringify(entries));
+      entryInput.value = '';
+      loadEntries();
+    }
+
+    function loadEntries() {
+      entriesList.innerHTML = '';
+      const entries = JSON.parse(localStorage.getItem('gratitudeEntries')) || [];
+
+      entries.forEach(entry => {
+        const li = document.createElement('li');
+        li.innerHTML = `<div>${entry.text}</div><div class="date">${entry.date}</div>
+                        <button class="delete-btn" onclick="deleteEntry(${entry.id})">刪除</button>`;
+        entriesList.appendChild(li);
+      });
+    }
+
+    function deleteEntry(id) {
+      let entries = JSON.parse(localStorage.getItem('gratitudeEntries')) || [];
+      entries = entries.filter(entry => entry.id !== id);
+      localStorage.setItem('gratitudeEntries', JSON.stringify(entries));
+      loadEntries();
+    }
+  </script>
+</body>
+</html>

@@ -1,8 +1,10 @@
 const cacheName = "gratitude-v1";
 const filesToCache = [
-  "/gratitude-journal/",
-  "/gratitude-journal/index.html",
-  "/gratitude-journal/manifest.json"
+  "./",
+  "./index.html",
+  "./manifest.json",
+  "./icon-192.png",
+  "./icon-512.png"
 ];
 
 self.addEventListener("install", e => {

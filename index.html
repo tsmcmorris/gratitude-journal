@@ -1,11 +1,16 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
-  <link rel="manifest" href="manifest.json">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-192.png">
+<meta name="theme-color" content="#f5a623">
+
 <script>
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
-      navigator.serviceWorker.register('service-worker.js');
+      navigator.serviceWorker.register('service-worker.js')
+        .then(() => console.log("Service Worker 註冊成功"))
+        .catch(err => console.log("SW 註冊失敗:", err));
     });
   }
 </script>
